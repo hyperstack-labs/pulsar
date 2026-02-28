@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, ChevronRight, Fingerprint, Lock, Cpu } from 'lucide-react';
+import { Activity, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function SignInPage() {
   const [error, setError] = useState('');
@@ -21,131 +21,95 @@ export default function SignInPage() {
       await signIn();
       router.push('/dashboard');
     } catch (err) {
-      setError('System authentication failure. Please re-validate session.');
+      setError('Invalid credentials. Please try again.');
     }
   };
 
   return (
-    <div className="relative min-h-screen bg-[#050505] flex items-center justify-center px-4 overflow-hidden font-sans antialiased">
-      {/* Dynamic Background Elements */}
-      <div className="absolute inset-0 z-0">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[10%] -left-[10%] w-[60%] h-[60%] bg-primary/20 blur-[120px] rounded-full"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-secondary/10 blur-[120px] rounded-full"
-        />
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-[0.03] pointer-events-none" />
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background px-4">
+      {/* Clean, Modern Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.05),transparent_50%)]" />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-[440px]"
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-md"
       >
-        <div className="bg-[#0f0f0f]/60 backdrop-blur-2xl border border-white/5 rounded-[32px] p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] space-y-10">
-          {/* Logo Section */}
-          <div className="flex flex-col items-center gap-6">
-            <motion.div
-              whileHover={{ rotate: 180 }}
-              transition={{ duration: 0.6, type: "spring" }}
-              className="relative w-16 h-16 group"
-            >
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full scale-125 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <Image
-                src="/logo.png"
-                alt="PULSAR"
-                fill
-                className="object-contain relative z-10 drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]"
-              />
-            </motion.div>
-            <div className="text-center">
-              <h1 className="text-2xl font-black tracking-tighter text-white sm:text-4xl">
-                WELCOME <span className="text-primary">BACK</span>
-              </h1>
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-[0.2em] mt-2 opacity-60">
-                A simpler way to track your health.
-              </p>
-            </div>
-          </div>
+        <Link href="/" className="inline-flex items-center gap-2 mb-8 text-muted-foreground hover:text-foreground transition-colors">
+          <ArrowRight className="w-4 h-4 rotate-180" />
+          <span className="text-sm font-medium">Back to Home</span>
+        </Link>
 
-          <div className="space-y-6">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent pointer-events-none" />
+
+          <div className="relative z-10">
+            <div className="flex justify-center mb-8">
+              <div className="bg-primary/10 p-3 rounded-2xl border border-primary/20 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                <Activity className="w-8 h-8 text-primary" />
+              </div>
+            </div>
+
+            <div className="text-center mb-8">
+              <h1 className="text-2xl font-bold tracking-tight mb-2 text-foreground">Welcome back</h1>
+              <p className="text-sm text-muted-foreground">Sign in to continue to Pulsar</p>
+            </div>
+
             {error && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 text-destructive flex items-center gap-3"
+                className="bg-destructive/10 border border-destructive/20 rounded-xl p-3 mb-6 text-destructive flex items-center gap-2 text-sm"
               >
-                <Lock className="w-4 h-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">{error}</span>
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
               </motion.div>
             )}
 
-            <div className="space-y-4">
-              <div className="group relative">
-                <div className="absolute inset-0 bg-primary/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity" />
-                <Button
-                  onClick={handleSubmit}
-                  disabled={isLoading}
-                  className="relative w-full h-[64px] bg-white text-black hover:bg-white/90 font-bold text-base tracking-tight rounded-2xl transition-all shadow-[0_8px_24px_-8px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3 border-none group"
-                >
-                  {isLoading ? (
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="w-5 h-5 border-2 border-black border-t-transparent rounded-full"
-                    />
-                  ) : (
-                    <>
-                      Enter Pulsar
-                      <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-3 gap-2 py-4">
-                <div className="h-px bg-white/5 self-center" />
-                <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest text-center">Secure Connection</span>
-                <div className="h-px bg-white/5 self-center" />
-              </div>
-
-              <div className="flex justify-center flex-col items-center gap-4 text-muted-foreground opacity-30">
-                <div className="relative w-10 h-10 grayscale brightness-200 contrast-200 invert opacity-50">
-                  <Image
-                    src="/logo.png"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4">
+                {/* Mock Form fields just to look like a real login, logic ignores them anyway based on previous code */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Email</label>
+                  <input type="email" placeholder="you@example.com" disabled className="w-full h-11 px-4 rounded-xl bg-background/50 border border-white/10 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all opacity-50 cursor-not-allowed" defaultValue="demo@pulsar.io" />
                 </div>
-                <span className="text-[8px] font-black uppercase tracking-[0.4em]">Official Product Environment</span>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-foreground">Password</label>
+                  <input type="password" placeholder="••••••••" disabled className="w-full h-11 px-4 rounded-xl bg-background/50 border border-white/10 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all opacity-50 cursor-not-allowed" defaultValue="password123" />
+                </div>
               </div>
+
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-[0_4px_14px_rgba(59,130,246,0.3)] transition-all flex items-center justify-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    Sign In
+                  </>
+                )}
+              </Button>
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-white/10 text-center">
+              <p className="text-sm text-muted-foreground">
+                Don't have an account?{' '}
+                <Link href="/sign-up" className="text-primary hover:text-primary/80 font-medium transition-colors">
+                  Create one now
+                </Link>
+              </p>
             </div>
           </div>
-
-          <div className="pt-6 border-t border-white/5 text-center">
-            <p className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-[0.2em] leading-relaxed">
-              Proprietary Enterprise Environment<br />
-              <span className="text-primary/40">© 2026 PULSAR GLOBAL INTELLIGENCE</span>
-            </p>
-          </div>
         </div>
-
-        {/* Floating Accents */}
-        <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 blur-3xl -z-10 rounded-full" />
-        <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-secondary/20 blur-3xl -z-10 rounded-full" />
       </motion.div>
     </div>
   );

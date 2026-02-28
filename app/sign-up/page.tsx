@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Image from 'next/image';
+import { Activity, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -44,139 +44,136 @@ export default function SignUpPage() {
       await signUp(formData.email, formData.password, formData.name);
       router.push('/dashboard');
     } catch (err) {
-      setError('Failed to create account');
+      setError('Failed to create account. Please try again.');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-secondary to-background flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-md">
-        <div className="bg-card rounded-2xl shadow-2xl p-8 space-y-8">
-          {/* Logo */}
-          <div className="flex justify-center">
-            <div className="relative w-20 h-20">
-              <Image
-                src="/logo.png"
-                alt="PULSAR Logo"
-                fill
-                className="object-contain"
-              />
-            </div>
-          </div>
-
-          <div className="text-center space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">Join PULSAR</h1>
-            <p className="text-muted-foreground">Start monitoring your health with AI</p>
-          </div>
-
-          {error && (
-            <div className="bg-destructive/10 border border-destructive rounded-lg p-3 text-destructive text-sm">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium text-foreground">
-                Full Name
-              </label>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="John Doe"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-foreground">
-                Email Address
-              </label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-foreground">
-                Password
-              </label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-              />
-              <p className="text-xs text-muted-foreground">At least 8 characters</p>
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
-                Confirm Password
-              </label>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-                className="bg-input border-border text-foreground placeholder:text-muted-foreground"
-              />
-            </div>
-
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-2"
-            >
-              {isLoading ? 'Creating Account...' : 'Create Account'}
-            </Button>
-          </form>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-card text-muted-foreground">Already have an account?</span>
-            </div>
-          </div>
-
-          <Link href="/sign-in">
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full border-primary text-primary hover:bg-primary/5"
-            >
-              Sign In
-            </Button>
-          </Link>
-
-          <p className="text-center text-xs text-muted-foreground">
-            By creating an account, you agree to our{' '}
-            <a href="#" className="text-primary hover:underline">
-              Terms of Service
-            </a>
-          </p>
-        </div>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background px-4 py-12">
+      {/* Clean, Modern Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.05),transparent_50%)]" />
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 w-full max-w-md"
+      >
+        <Link href="/" className="inline-flex items-center gap-2 mb-8 text-muted-foreground hover:text-foreground transition-colors">
+          <span className="text-sm font-medium">Back to Home</span>
+        </Link>
+
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent pointer-events-none" />
+
+          <div className="relative z-10">
+            <div className="flex justify-center mb-8">
+              <div className="bg-primary/10 p-3 rounded-2xl border border-primary/20 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
+                <Activity className="w-8 h-8 text-primary" />
+              </div>
+            </div>
+
+            <div className="text-center mb-8">
+              <h1 className="text-2xl font-bold tracking-tight mb-2 text-foreground">Create your account</h1>
+              <p className="text-sm text-muted-foreground">Join Pulsar to start tracking your health smarter</p>
+            </div>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-destructive/10 border border-destructive/20 rounded-xl p-3 mb-6 text-destructive flex items-center gap-2 text-sm"
+              >
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
+              </motion.div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  placeholder="John Due"
+                  className="w-full h-11 px-4 rounded-xl bg-background/50 border border-white/10 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="you@example.com"
+                  className="w-full h-11 px-4 rounded-xl bg-background/50 border border-white/10 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="••••••••"
+                  className="w-full h-11 px-4 rounded-xl bg-background/50 border border-white/10 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                />
+              </div>
+
+              <div className="space-y-2 pb-2">
+                <label className="text-sm font-medium text-foreground">Confirm Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  placeholder="••••••••"
+                  className="w-full h-11 px-4 rounded-xl bg-background/50 border border-white/10 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-12 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-[0_4px_14px_rgba(59,130,246,0.3)] transition-all flex items-center justify-center gap-2"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Creating Account...
+                  </>
+                ) : (
+                  <>
+                    Sign Up
+                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </Button>
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-white/10 text-center">
+              <p className="text-sm text-muted-foreground">
+                Already have an account?{' '}
+                <Link href="/sign-in" className="text-primary hover:text-primary/80 font-medium transition-colors">
+                  Sign in
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

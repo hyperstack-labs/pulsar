@@ -20,51 +20,49 @@ export function MetricCard({
   trend,
 }: MetricCardProps) {
   const statusColors = {
-    normal: 'border-accent/20 bg-card/50',
-    warning: 'border-yellow-500/30 bg-card/50',
-    critical: 'border-destructive/30 bg-card/50',
-    good: 'border-green-500/30 bg-card/50',
-  };
-
-  const statusGlows = {
-    normal: 'shadow-[0_0_15px_-5px_var(--accent)]',
-    warning: 'shadow-[0_0_15px_-5px_rgba(234,179,8,0.3)]',
-    critical: 'shadow-[0_0_15px_-5px_rgba(239,68,68,0.3)]',
-    good: 'shadow-[0_0_15px_-5px_rgba(34,197,94,0.3)]',
+    normal: 'text-primary bg-primary/10',
+    warning: 'text-yellow-500 bg-yellow-500/10',
+    critical: 'text-destructive bg-destructive/10',
+    good: 'text-green-500 bg-green-500/10',
   };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02, translateY: -4 }}
+      whileHover={{ scale: 1.02, translateY: -2 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="h-full"
     >
-      <Card className={`p-6 border-2 backdrop-blur-sm transition-all duration-300 ${statusColors[status]} ${statusGlows[status]}`}>
+      <Card className="h-full p-6 border-border/50 bg-card/40 backdrop-blur-md transition-all duration-300 hover:border-border hover:bg-card/60 shadow-xs relative overflow-hidden group">
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground mb-1">{label}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 group-hover:text-foreground/80 transition-colors">{label}</p>
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-foreground transition-all">{value}</span>
+              <span className="text-4xl font-bold text-foreground tracking-tight">{value}</span>
               <span className="text-sm font-medium text-muted-foreground">{unit}</span>
             </div>
           </div>
-          <div className="p-3 rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary/20">
+          <div className={`p-3 rounded-2xl transition-colors ${statusColors[status]}`}>
             <Icon className="w-6 h-6" />
           </div>
         </div>
         {trend !== undefined && (
-          <div className="flex items-center gap-1 mt-4 text-xs font-semibold">
+          <div className="flex items-center gap-1.5 mt-5 text-sm font-medium">
             {trend > 0 ? (
               <>
-                <TrendingUp className="w-3.5 h-3.5 text-green-500" />
-                <span className="text-green-500">+{trend}%</span>
+                <div className="flex items-center gap-1 text-green-500 bg-green-500/10 px-2 py-0.5 rounded-md">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>+{trend}%</span>
+                </div>
               </>
             ) : (
               <>
-                <TrendingDown className="w-3.5 h-3.5 text-red-500" />
-                <span className="text-red-500">{trend}%</span>
+                <div className="flex items-center gap-1 text-destructive bg-destructive/10 px-2 py-0.5 rounded-md">
+                  <TrendingDown className="w-4 h-4" />
+                  <span>{trend}%</span>
+                </div>
               </>
             )}
-            <span className="text-muted-foreground font-normal ml-1">vs last period</span>
+            <span className="text-muted-foreground text-xs ml-1">vs last period</span>
           </div>
         )}
       </Card>
