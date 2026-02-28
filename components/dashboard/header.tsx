@@ -33,9 +33,9 @@ export function DashboardHeader({ title, subtitle }: DashboardHeaderProps) {
           </div>
           <div className="flex items-center gap-2">
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="bg-card border-border text-foreground hover:bg-primary/5 hover:border-primary/30 rounded-xl relative h-11 w-11 shadow-sm"
+              className="bg-card border border-border text-foreground hover:bg-primary/5 hover:border-primary/30 hover:text-foreground rounded-xl relative h-11 w-11 shadow-sm transition-all"
             >
               <Bell className="w-5 h-5" />
               <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-card" />

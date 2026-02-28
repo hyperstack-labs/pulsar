@@ -51,9 +51,9 @@ export function Footer() {
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
                     <p>© {new Date().getFullYear()} Pulsar Health Inc. All rights reserved.</p>
                     <div className="flex gap-4">
-                        <Link href="#" className="hover:text-foreground transition-colors">Twitter</Link>
-                        <Link href="#" className="hover:text-foreground transition-colors">GitHub</Link>
-                        <Link href="#" className="hover:text-foreground transition-colors">Discord</Link>
+                        <Link href="#" className="hover:text-white transition-colors">Twitter</Link>
+                        <Link href="#" className="hover:text-white transition-colors">GitHub</Link>
+                        <Link href="#" className="hover:text-white transition-colors">Discord</Link>
                     </div>
                 </div>
             </div>

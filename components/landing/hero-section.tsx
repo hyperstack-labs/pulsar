@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 
@@ -59,14 +60,15 @@ export function HeroSection() {
                             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </Button>
-                    <Button size="lg" variant="outline" asChild className="w-full sm:w-auto rounded-full px-8 h-14 text-base border-white/10 hover:bg-secondary/50 text-foreground">
-                        <Link href="#features">
-                            Explore features
-                        </Link>
-                    </Button>
+                    <Link
+                        href="#features"
+                        className="w-full sm:w-auto flex items-center justify-center rounded-full px-8 h-14 text-base font-medium border border-white/10 hover:bg-white/5 text-muted-foreground hover:text-white transition-all"
+                    >
+                        Explore features
+                    </Link>
                 </motion.div>
 
-                {/* Dashboard Preview Mockup mockup */}
+                {/* Dashboard Screenshot Mockup */}
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -74,22 +76,16 @@ export function HeroSection() {
                     className="mt-20 w-full max-w-5xl relative rounded-2xl md:rounded-[2.5rem] p-2 bg-white/5 border border-white/10 shadow-2xl backdrop-blur-sm"
                 >
                     <div className="absolute inset-0 bg-linear-to-t from-background via-background/80 to-transparent z-10 rounded-[2.5rem] pointer-events-none" />
-                    <div className="relative rounded-xl md:rounded-4xl overflow-hidden bg-background border border-white/5 aspect-video md:aspect-21/9 flex items-center justify-center">
-                        {/* Abstract Representation of UI since we can't take a screenshot easily */}
-                        <div className="w-full h-full opacity-60 bg-[url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center grayscale mix-blend-luminosity" />
-                        <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-background/90 to-background" />
 
-                        <div className="absolute inset-0 flex flex-col p-8 md:p-12 z-20">
-                            <div className="flex gap-4 mb-8">
-                                <div className="h-32 w-64 rounded-2xl bg-secondary/80 border border-white/5 backdrop-blur-md shadow-lg" />
-                                <div className="h-32 w-64 rounded-2xl bg-secondary/80 border border-white/5 backdrop-blur-md shadow-lg" />
-                                <div className="h-32 w-64 rounded-2xl bg-secondary/80 border border-white/5 backdrop-blur-md shadow-lg" />
-                            </div>
-                            <div className="flex-1 flex gap-4">
-                                <div className="flex-2 rounded-2xl bg-secondary/50 border border-white/5 backdrop-blur-md shadow-lg" />
-                                <div className="flex-1 rounded-2xl bg-secondary/50 border border-white/5 backdrop-blur-md shadow-lg" />
-                            </div>
-                        </div>
+                    <div className="relative rounded-xl md:rounded-4xl overflow-hidden bg-background border border-white/5 flex items-center justify-center">
+                        <Image
+                            src="/dashboard.png"
+                            alt="Pulsar Dashboard Preview"
+                            width={1400}
+                            height={900}
+                            className="w-full h-auto object-cover"
+                            priority
+                        />
                     </div>
                 </motion.div>
             </div>
